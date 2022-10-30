@@ -31,3 +31,15 @@ worker: celery -A site_settings.tasks worker -l info
 
 #on heroku
 heroku run celery ....
+
+###ENV
+SECRET_KEY
+
+GOOGLE_CLIENT_ID
+GOOGLE_SECRET
+GOOGLE_KEY
+
+BROKER_URL
+
+LIQPAY_PUBLIC_KEY
+LIQPAY_PRIVATE_KEY
