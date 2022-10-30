@@ -1,0 +1,5 @@
+.card { overflow: hidden; width: 480px;}
+
+.card .ramka { float: left; margin-right: 10px; margin-bottom: 10px;}
+.card img { width: 480px; height: 350px; object-fit: cover; }
+

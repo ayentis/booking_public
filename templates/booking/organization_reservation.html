@@ -1,0 +1,84 @@
+{% extends "base_bootstrap5.html" %}
+{% load i18n %}
+{% load static %}
+{% load custom_tags %}
+{% block title %}
+    Reservations
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    {% include "booking/main_navbar.html" with id=organization_id %}
+
+    <h1>{% trans "Reservation" %}</h1>
+
+    {% if data_structure.items %}
+
+        {% for period_key, period_value in data_structure.items %}
+          <div>
+              <h2> {% trans "Month" %}: {{ period_key }}</h2>
+          </div>
+            {% for category_key, category_value in period_value.items %}
+                <h3> {% trans "Apartnent category" %} "{{ category_key }}"</h3>
+                <table class="table">
+                  <thead>
+                    <tr>
+                        {% for col_value in category_value.column %}
+                            <th scope="col">{{ col_value }}</th>
+                        {% endfor %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for row_header,row_values in category_value.row.items %}
+                      <tr>
+                        <th scope="row">{{row_header.name}}</th>
+                          {% for row_value in row_values %}
+                            <td>
+
+                              {% if row_value.in_past %}
+                                <span class="badge badge-secondary">_</span>
+                              {% elif row_value.order.status == 'on_hold' %}
+                                <span class="badge badge-warning">_</span>
+                              {% elif row_value.order.status == 'reserved' %}
+                                <span class="badge badge-primary">_</span>
+                              {% else %}
+                                <span class="badge badge-info" order_data="{{row_value.booking_data|date:'Y-m-d'}}"
+                                      apartment_id={{row_header.id}}>_</span>
+                              {% endif %}
+                            </td>
+                          {% endfor %}
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+            {% endfor %}
+        {% endfor %}
+        <form id="submit-form" method="post" action="{% url 'confirm_order' organization_id %}">
+            {% csrf_token %}
+            <input id="result_json" type="text" name="booking_result" style="display:none">
+        </form>
+
+        <button type="button" class="btn btn-primary disabled" id="submit-reservation" aria-disabled="true">{% trans 'Submit' %}</button>
+
+    {% else %}
+        <li>{% trans "Not found available apartments" %}</li>
+        <br>
+    {% endif %}
+
+    {% organization_acceptable_for_user user organization_id as edit_acceptable %}
+    <br>
+    <br>
+    <p>
+    {% if edit_acceptable  %}
+        <a class="btn btn-outline-success me-2" href="{% url 'add_apartment' organization_id %}" role="button">{% trans 'Add apartment' %}</a>
+        <a class="btn btn-outline-success me-2" href="{% url 'add_price' organization_id %}" role="button">{% trans 'Add price' %}</a>
+        <a class="btn btn-outline-success me-2" href="{% url 'add_month' organization_id %}" role="button">{% trans 'Add next month' %}</a>
+    {% endif %}
+    </p>
+</div>
+
+<script src="{% static 'js/booking/organization_reservation.js' %}"></script>
+
+{% endblock %}

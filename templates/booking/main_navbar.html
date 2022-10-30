@@ -1,0 +1,14 @@
+{% load i18n %}
+
+<div class="container">
+    <nav class="navbar navbar-light bg-light">
+      <form class="container-fluid justify-content-start">
+        <a class="btn btn-outline-success me-2" href="{% url 'organizations_main' %}" role="button">
+            <img src="{{MEDIA_URL}}site_pictograms/home.png" width="20" height="20">
+        </a>
+        <a class="btn btn-outline-success me-2" href="{% url 'organization_about' id %}" role="button">{% trans 'About' %}</a>
+        <a class="btn btn-outline-success me-2" href="{% url 'organization_reservation' id %}" role="button">{% trans 'Reservation' %}</a>
+        <a class="btn btn-outline-success me-2" href="{% url 'organization_contacts' id %}" role="button">{% trans 'Contacts' %}</a>
+      </form>
+    </nav>
+</div>

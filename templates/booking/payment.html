@@ -1,0 +1,54 @@
+{% extends "base_bootstrap5.html" %}
+{% load i18n %}
+{% load static %}
+
+
+{% block title %}
+    Order details
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+        <p>{{liqpay_data.description}}</p>
+        <p>{{liqpay_data.amount}} {{liqpay_data.currency}}</p>
+    <form method="POST" action="https://www.liqpay.ua/api/3/checkout" accept-charset="utf-8">
+        <input type="hidden" name="data" value="{{liqpay_data.data}}"/>
+        <input type="hidden" name="signature" value="{{liqpay_data.signature}}"/>
+        <input type="image" src="//static.liqpay.ua/buttons/p1ru.radius.png"/>
+    </form>
+</div>
+
+{% comment %}
+
+    {% get_current_language as LANGUAGE_CODE %}
+
+    <div id="liqpay_checkout"></div>
+
+    <script>
+        window.LiqPayCheckoutCallback = function() {
+            LiqPayCheckout.init({
+                data: "{{ liqpay_data.data }}",
+                signature: "{{ liqpay_data.signature }}",
+                embedTo: "#liqpay_checkout",
+                language: "{{LANGUAGE_CODE}}",
+                mode: "embed" // embed || popup,
+            }).on("liqpay.callback", function(data){
+                console.log(data.status);
+                console.log(data);
+                //document.location.href = "{{liqpay_data.redirect_url}}"
+            }).on("liqpay.ready", function(data){
+                // ready
+                // document.location.href = "{{liqpay_data.redirect_url}}"
+            }).on("liqpay.close", function(data){
+                // close
+                document.location.href = "{{liqpay_data.redirect_url}}"
+            });
+        };
+    </script>
+    <a href="{% url 'organization_reservation' pk %}" class="btn btn-secondary btn-lg" tabindex="-1" role="button" >{% trans 'Back' %}</a>
+    <script src="//static.liqpay.ua/libjs/checkout.js" async></script>
+{% endcomment %}
+
+
+{% endblock %}

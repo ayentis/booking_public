@@ -1,0 +1,2 @@
+[flake8]
+exclude = .git,.github,__pycache__,venv,.idea, liqpay, migrations

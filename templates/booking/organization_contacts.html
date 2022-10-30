@@ -1,0 +1,44 @@
+{% extends "base_bootstrap5.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}
+    Contacts
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    {% include "booking/main_navbar.html" with id=organization_id %}
+
+    {% for org_contacts in object_list %}
+    <div class="card mb-3" style="max-width: 540px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          {% if org_contacts.photo %}
+            <img src="{% url 'view_picture' %}?name={{ org_contacts.photo }}"
+                 class="img-fluid img-thumbnail"
+                 alt="..." />
+          {% else %}
+            <img src="{{MEDIA_URL}}site_pictograms/no_photo.png"
+                 class="img-fluid rounded-start"
+                 style="width:150px; height:150px">
+          {% endif %}
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">{{ org_contacts.first_name }}</h5>
+            <p class="card-text">{% trans 'phone' %} : {{ org_contacts.phone_number }}</p>
+            <p class="card-text">{% trans 'email' %} : {{ org_contacts.email }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script src="{% static 'js/booking/suggestions.js' %}"></script>
+
+
+{% endblock %}

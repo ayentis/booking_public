@@ -1,0 +1,72 @@
+{% extends "base_bootstrap5.html" %}
+{% load i18n %}
+{% load static %}
+{% load custom_tags %}
+
+
+{% block title %}
+    Order details
+{% endblock %}
+
+{% block content %}
+
+
+
+<div class="container">
+    {% for apartment_id, apartment_values in booking_details_with_totals.total_apartment.items %}
+      <h1>{{ apartment_values.name }} </h1>
+      <table class="table">
+
+        <thead>
+          <tr>
+            <th scope="col">Data</th>
+            <th scope="col">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ap_detail in booking_details_with_totals.detail|get_value_from_dict:apartment_id %}
+            <tr>
+              <td>{{ap_detail.0}}</td>
+              <td>{{ap_detail.1|floatformat:2}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+
+        <thead>
+          <tr>
+            <th>{% trans 'Total ' %}{{ apartment_values.name }}</th>
+            <th>{{apartment_values.sum|floatformat:2}}</th>
+          </tr>
+        </thead>
+      </table>
+    {% endfor %}
+
+    <br>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>{% trans 'Grand total ' %}</th>
+          <th>{{booking_details_with_totals.total|floatformat:2}}</th>
+        </tr>
+      </thead>
+    </table>
+    <br>
+    <br>
+    <br>
+
+    <div class="alert alert-danger" role="alert">
+        After your press "Go to payment" button, you will have only {{TIMEOUT_AWAIT_ON_HOLD_ORDER}} minutes for payment and confirmation your order.
+        In other case reservation will be cancelled
+    </div>
+
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {{form.renewal_date.errors}}
+        <a href="{% url 'organization_reservation' pk %}" class="btn btn-secondary btn-lg" tabindex="-1" role="button" >{% trans 'Cancel' %}</a>
+        <input type="submit" class="btn btn-primary btn-lg" vаluе="{% trans 'Go to payment' %}">
+    </form>
+
+</div>
+{% endblock %}

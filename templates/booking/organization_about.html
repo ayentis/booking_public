@@ -1,0 +1,40 @@
+{% extends "base_bootstrap5.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}
+    About
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    {% include "booking/main_navbar.html" with id=object.id %}
+
+    <div class="card w-75">
+      <div class="card-body">
+        <h5 class="card-title">{{organization.name}}</h5>
+        <p class="card-text">{{organization.description}}</p>
+      </div>
+    </div>
+
+    {% for media_item in media_list %}
+        <div class="card">
+            <div class="ramka">
+                {#<img src="{{MEDIA_URL}}{{media_item.media}}" class="card-img-top" alt="..."> #}
+                {% if media_item.media %}
+                    <img src="{% url 'view_picture' %}?name={{ media_item.media }}" class="card-img-top" alt="..." />
+                {% else %}
+                    <img src="{{MEDIA_URL }}/site_pictograms/no_photo.png" class="card-img-top" alt="..."/>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<script src="{% static 'js/booking/suggestions.js' %}"></script>
+
+
+{% endblock %}
+

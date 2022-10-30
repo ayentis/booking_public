@@ -1,0 +1,21 @@
+{% extends "base_bootstrap5.html" %}
+{% load i18n %}
+{% load static %}
+{% load custom_tags %}
+{% block title %}
+    Create {{object_name}}
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <br>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input class="btn btn-outline-success me-2" type="submit" name="save" value="{% trans 'Save' %}">
+        <input class="btn btn-outline-success me-2" type="submit" name="save_and_add_next" value="{% trans 'Save and add next' %}">
+        <a class="btn btn-outline-success me-2" href="{% url 'organization_reservation' organization_id %}" role="button">{% trans 'Cansel' %}</a>
+    </form>
+</div>
+{% endblock %}
